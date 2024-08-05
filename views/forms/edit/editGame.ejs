@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%=title %></title>
+  </head>
+  <body>
+    <form action="/game/:id/edit" method="post">
+      <label for="categoryName">Edit your category name:</label>
+      <input type="text" name="categoryName" value="<%= category.name %>" />
+      <select name="genre" id="genre">
+        <% categories.map((category)=>{%>
+        <option value="<%= category.name %>"><%= category.name %></option>
+        <%})%>
+      </select>
+    </form>
+  </body>
+</html>
