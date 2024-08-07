@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create developer</title>
+  </head>
+  <body>
+    <form action="/game/create" method="post">
+      <label for="gameName">Enter your game name</label
+      ><input type="text" name="gameName" />
+      <button>Submit form</button>
+      <label for="categoryName">Change category:</label>
+      <select name="category" id="category">
+        <% categories.map((category)=>{%>
+        <option value="<%= category.name %>"><%= category.name %></option>
+        <%})%>
+      </select>
+      <label for="developerName">Change developer:</label>
+      <select name="developer" id="developer">
+        <% developers.map((developer)=>{%>
+        <option value="<%= developer.name %>"><%= developer.name %></option>
+        <%})%>
+      </select>
+      <label for="date">Change date:</label>
+      <input type="date" name="release_date" />
+    </form>
+  </body>
+</html>
