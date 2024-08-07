@@ -1,29 +1,31 @@
-import { Router } from "express";
+const { Router } = require("express");
 const controller = require("../controllers/controller");
-Router.get("/", controller.getIndex);
-Router.get("/games", controller.getGames);
-Router.get("/game/:id", controller.getGame);
-Router.get("/category/:id", controller.getCategory);
-Router.get("/developer/:id", controller.getDeveloper);
-Router.get("/categories", controller.getCategories);
-Router.get("/developers", controller.getDevelopers);
+const appRouter = Router();
+appRouter.get("/", controller.getIndex);
+appRouter.get("/games", controller.getGames);
+appRouter.get("/game/:id", controller.getGame);
+appRouter.get("/category/:id", controller.getCategory);
+appRouter.get("/developer/:id", controller.getDeveloper);
+appRouter.get("/categories", controller.getCategories);
+appRouter.get("/developers", controller.getDevelopers);
 
-Router.get("/category/create", controller.createCategory);
-Router.get("/developer/create", controller.createDeveloper);
-Router.get("/game/create", controller.createGame);
+appRouter.get("/category/create", controller.createCategory);
+appRouter.get("/developer/create", controller.createDeveloper);
+appRouter.get("/game/create", controller.createGame);
 
-Router.get("/category/:id/edit", controller.getEditCategory);
-Router.get("/developer/:id/edit", controller.getEditDeveloper);
-Router.get("/game/:id/edit", controller.getEditGame);
+appRouter.get("/category/:id/edit", controller.getEditCategory);
+appRouter.get("/developer/:id/edit", controller.getEditDeveloper);
+appRouter.get("/game/:id/edit", controller.getEditGame);
 
-Router.post("/category/create", controller.createCategory);
-Router.post("/developer/create", controller.createDeveloper);
-Router.post("/game/create", controller.createGame);
+appRouter.post("/category/create", controller.createCategory);
+appRouter.post("/developer/create", controller.createDeveloper);
+appRouter.post("/game/create", controller.createGame);
 
-Router.post("/category/:id/edit", controller.postEditCategory);
-Router.post("/developer/:id/edit", controller.postEditDeveloper);
-Router.post("/game/:id/edit", controller.postEditGame);
+appRouter.post("/category/:id/edit", controller.postEditCategory);
+appRouter.post("/developer/:id/edit", controller.postEditDeveloper);
+appRouter.post("/game/:id/edit", controller.postEditGame);
 
-Router.post("./game:id/delete", controller.getDeleteGame);
-Router.post("./category:id/delete", controller.getDeleteCategory);
-Router.post("./developer:id/delete", controller.getDeleteDeveloper);
+appRouter.post("./game:id/delete", controller.getDeleteGame);
+appRouter.post("./category:id/delete", controller.getDeleteCategory);
+appRouter.post("./developer:id/delete", controller.getDeleteDeveloper);
+module.exports = appRouter;
