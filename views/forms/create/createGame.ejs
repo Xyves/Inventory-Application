@@ -10,19 +10,19 @@
       <label for="gameName">Enter your game name</label
       ><input type="text" name="gameName" />
       <button>Submit form</button>
-      <label for="categoryName">Change category:</label>
+      <label for="categoryName">Select category:</label>
       <select name="category" id="category">
-        <% categories.map((category)=>{%>
+        <% categories.forEach((category)=>{ %>
         <option value="<%= category.name %>"><%= category.name %></option>
         <%})%>
       </select>
-      <label for="developerName">Change developer:</label>
+      <label for="developerName">Select developer:</label>
       <select name="developer" id="developer">
-        <% developers.map((developer)=>{%>
+        <% developers.forEach((developer) => { %>
         <option value="<%= developer.name %>"><%= developer.name %></option>
-        <%})%>
+        <% }) %>
       </select>
-      <label for="date">Change date:</label>
+      <label for="date">Select date:</label>
       <input type="date" name="release_date" />
     </form>
   </body>

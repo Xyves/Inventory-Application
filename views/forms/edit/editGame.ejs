@@ -7,11 +7,18 @@
   </head>
   <body>
     <form action="/game/:id/edit" method="post">
-      <label for="categoryName">Edit your category name:</label>
-      <input type="text" name="categoryName" value="<%= category.name %>" />
-      <select name="genre" id="genre">
+      <label for="gameName">New name:</label
+      ><input type="text " name="gameName" placeholder="<%= game.name %>" />
+      <label for="categoryName">Change category:</label>
+      <select name="category" id="category">
         <% categories.map((category)=>{%>
         <option value="<%= category.name %>"><%= category.name %></option>
+        <%})%>
+      </select>
+      <label for="categoryName">Change developer:</label>
+      <select name="game" id="game">
+        <% developers.map((developer)=>{%>
+        <option value="<%= developer.name %>"><%= developer.name %></option>
         <%})%>
       </select>
     </form>

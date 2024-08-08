@@ -6,14 +6,13 @@
     <title><%=title %></title>
   </head>
   <body>
-    <form action="/edit" method="post">
+    <form action="/category/:id/edit" method="post">
       <label for="categoryName">Edit your category name:</label>
-      <input type="text" name="categoryName" value="<%= category.name %>" />
-      <select name="genre" id="genre">
-        <% category.map((category)=>{%>
-        <option value="<%= category.name %>"><%= category.name %></option>
-        <%})%>
-      </select>
+      <input
+        type="text"
+        name="categoryName"
+        placeholder="<%= category[0].name %>"
+      />
     </form>
   </body>
 </html>

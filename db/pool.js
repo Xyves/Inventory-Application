@@ -1,7 +1,10 @@
 const { Pool } = require("pg");
+require("dotenv").config();
 module.exports = new Pool({
-  url: process.env.DB_URL,
-  max: 20, // maximum number of connections in the pool
-  idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
-  connectionTimeoutMillis: 2000, // how long to wait for a connection to be established
+  host: process.env.PGHOST,
+  database: process.env.PGDATABASE,
+  password: process.env.PGPASSWORD,
+  user: process.env.PGUSER,
+  port: 5432,
+  ssl: true,
 });

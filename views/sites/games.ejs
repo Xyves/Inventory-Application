@@ -3,12 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= title %>></title>
+    <title>Document</title>
   </head>
   <body>
-    <form action="/edit" method="post">
-      <label for=""></label>
-      <input type="text" />
-    </form>
+    <%- include("../partials/navbar.ejs") %>
+    <ul>
+      <% games.map((game)=>{ %>
+      <li><%= game.name %></li>
+      -
+      <a href="/game/<%=game.id%>/edit">Edit</a>
+      <span><%= game.category %></span>
+      <span><%= game.release_date %></span>
+      <span><%= game.developer %></span>
+      <span><%= game.release_date%></span>
+      <%})%>
+    </ul>
   </body>
 </html>

@@ -1,20 +1,28 @@
 const db = require("../db/query");
 async function getIndex(req, res) {
-  res.send("index", { title: "Home page" });
+  res.render("index.ejs", { title: "Home page" });
 }
 async function getGames(req, res) {
-  const games = db.getGames();
-  res.render("sites/games.ejs", { title: "List of Games", games: games });
+  const games = await db.getGames();
+
+  res.render("sites/games.ejs", {
+    title: "List of Games",
+    games: games,
+  });
 }
 async function getCategories(req, res) {
-  const categories = db.getCategories();
+  const categories = await db.getCategories();
+  console.log(categories);
   res.render("sites/categories.ejs", {
     title: "Categories",
     categories: categories,
   });
+  // const filtered = categories.map((category) => category.name);
+  // res.send("Categories: " + filtered);
 }
 async function getDevelopers(req, res) {
-  const developers = db.getDevelopers();
+  const developers = await db.getDevelopers();
+
   res.render("sites/developers.ejs", {
     title: "List of Developers",
     developers: developers,
@@ -22,59 +30,89 @@ async function getDevelopers(req, res) {
 }
 
 async function getGame(req, res) {
-  const game = db.getGame(id);
-  res.render("sites/game.ejs", { title: game.title, game: game });
-  res.redirect(`/game/${game.id}`);
+  const game = await db.getGame(req.params.id);
+  console.log(game[0]);
+  res.render("sites/game.ejs", { title: game.title, game: game[0] });
 }
 async function getDeveloper(req, res) {
-  const developer = db.getDeveloper(id);
+  const developer = await db.getDeveloper(req.params.id);
   res.render("sites/developer.ejs", {
     title: "List of Developers",
-    developer: developer,
+    name: developer[0].name,
   });
-  res.redirect(`/developer/${developer.id}`);
 }
 async function getCategory(req, res) {
-  const category = db.getCategory(id);
+  const category = await db.getCategory(req.params.id);
+  console.log(category[0].name);
   res.render("sites/category.ejs", {
     title: category.name,
-    name: category.name,
+    name: category[0].name,
   });
-  res.redirect(`/category/${category.id}`);
 }
-async function createGame(req, res) {
-  const game = db.createGame(title, developer, category, date, price);
-  res.redirect(`/game/${game.id}`);
+
+async function getCreateGame(req, res) {
+  const categories = await db.getCategories();
+  const developers = await db.getDevelopers();
+  res.render("forms/create/createGame", {
+    categories: categories,
+    developers: developers,
+  });
 }
-async function createDeveloper(req, res) {
-  db.createDeveloper(res.game);
-  res.redirect(`/game/${developer.id}`);
+async function getCreateDeveloper(req, res) {
+  res.render("forms/create/createCategory");
 }
-async function createCategory(req, res) {
-  db.createCategory(title);
-  res.redirect(`/game/${category.id}`);
+async function getCreateCategory(req, res) {
+  res.render("forms/create/createCategory");
+}
+
+async function postCreateGame(req, res) {
+  console.log(req.body);
+  const { gameName, category, developer, release_date } = req.body;
+  console.log(gameName, category, developer, release_date);
+  db.postCreateGame(gameName, category, developer, release_date);
+  res.redirect("sites/games");
+}
+async function postCreateDeveloper(req, res) {
+  console.log(req.body);
+
+  const { developerName } = req.body;
+  await db.postCreateDeveloper(developerName);
+  res.redirect("/developers");
+}
+async function postCreateCategory(req, res) {
+  const { categoryName } = req.body;
+  await db.postCreateCategory(categoryName);
+  res.redirect("sites/categories");
 }
 
 async function getEditGame(req, res) {
-  const game = db.getGame(id);
-  res.render("/forms/edit/editGame", { title: game.name, game: game });
+  const game = await db.getGame(req.params.id);
+  const categories = await db.getCategories();
+  const developers = await db.getDeveloper();
+  console.log(req.params.id);
+  res.render("forms/edit/editGame", {
+    title: game.name,
+    game: game,
+    categories: categories,
+    developers: developers,
+  });
   // db.editGame();
   // res.redirect;
 }
 async function getEditDeveloper(req, res) {
-  const developer = db.getDeveloper(id);
-  res.render("/forms/edit/editDeveloper", {
+  const developer = await db.getDeveloper(req.params.id);
+  console.log(developer);
+  res.render("forms/edit/editDeveloper", {
     title: developer.name,
     developer: developer,
   });
 }
 async function getEditCategory(req, res) {
-  const category = db.getCategory(id);
-  const categories = db.getCategories(id);
-  res.render("/forms/edit/editCategory", {
+  const category = await db.getCategory(req.params.id);
+  console.log(category);
+  res.render("forms/edit/editCategory", {
     title: category.name,
     category: category,
-    categories: categories,
   });
 }
 async function postEditGame(req, res) {
@@ -112,9 +150,9 @@ module.exports = {
   getDeleteGame,
   getDeleteCategory,
   getDeleteDeveloper,
-  createGame,
-  createCategory,
-  createDeveloper,
+  getCreateGame,
+  getCreateCategory,
+  getCreateDeveloper,
   getIndex,
   getEditCategory,
   getEditGame,
@@ -122,4 +160,7 @@ module.exports = {
   postEditCategory,
   postEditGame,
   postEditDeveloper,
+  postCreateGame,
+  postCreateCategory,
+  postCreateDeveloper,
 };
