@@ -141,11 +141,13 @@ nav ul li:first-of-type {
 }
 h1 {
   font-size: 48;
-  color: red;
 }
 a {
   color: inherit;
 }
 a:hover {
   color: rgb(170, 167, 167);
+}
+.delete {
+  color: red;
 }
