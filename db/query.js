@@ -1,30 +1,36 @@
 const pool = require("./pool");
 async function getGames() {
-  const { rows } = await pool.query("SELECT * FROM games");
-  console.log(rows);
+  const { rows } = await pool.query("SELECT * FROM games ORDER BY id ASC");
+  // console.log(rows);
   return rows;
 }
 async function getGame(id) {
-  const { rows } = await pool.query(`SELECT * FROM games WHERE id = ${id}`);
+  const { rows } = await pool.query("SELECT * FROM games WHERE id = $1", [id]);
   return rows;
 }
 
 async function getDevelopers() {
-  const { rows } = await pool.query("SELECT * FROM developers");
-  console.log(rows);
+  const { rows } = await pool.query("SELECT * FROM developers ORDER BY id ASC");
   return rows;
 }
 async function getDeveloper(id) {
-  const { rows } = await pool.query(
-    `SELECT * FROM developers WHERE id = ${id}`
-  );
-  console.log(rows);
-  return rows;
+  try {
+    if (!id) {
+      throw new Error("Developer ID must be provided");
+    }
+    const { rows } = await pool.query(
+      "SELECT * FROM developers WHERE id = $1",
+      [id]
+    );
+    // console.log(rows);
+    return rows;
+  } catch (err) {
+    console.error("Error fetching developer:", err.message);
+    throw err;
+  }
 }
 async function getCategories() {
-  const { rows } = await pool.query("SELECT * FROM categories");
-  console.log(rows);
-  typeof rows;
+  const { rows } = await pool.query("SELECT * FROM categories ORDER BY id ASC");
   return rows;
 }
 async function getCategory(id) {
@@ -35,10 +41,10 @@ async function getCategory(id) {
   console.log(rows);
   return rows;
 }
-async function postCreateGame(title, category, developer, date, price) {
+async function postCreateGame(name, category, developer, date, price) {
   await pool.query(
     "INSERT INTO games(name,category,release_date,developer) VALUES ($1,$2,$3,$4)",
-    [title, category, date, developer]
+    [name, category, date, developer]
   );
 }
 async function postCreateCategory(name) {
@@ -48,14 +54,24 @@ async function postCreateDeveloper(name) {
   await pool.query("INSERT INTO developers(name) VALUES ($1)", [name]);
 }
 
-async function editGame(game) {
-  const game1 = getGame(game.id);
+async function editGame(name, category, release_date, developer, id) {
   await pool.query(
-    `UPDATE Games SET name = ${game1.name},category=${game1.category} developer=${game1.developer} `
+    "UPDATE games SET name = $1,category =$2,release_date = $3,developer = $ WHERE id = $5",
+    [name, category, release_date, developer, id]
   );
 }
-async function editCategory() {}
-async function editDeveloper() {}
+async function editCategory(id, newName) {
+  await pool.query("UPDATE categories SET name = $1 WHERE id = $2", [
+    newName,
+    id,
+  ]);
+}
+async function editDeveloper(id, newName) {
+  await pool.query("UPDATE developers SET name = $1 WHERE id = $2", [
+    newName,
+    id,
+  ]);
+}
 
 async function postDeleteGame(id) {
   await pool.query(`DELETE FROM games WHERE id = ${id}`);
