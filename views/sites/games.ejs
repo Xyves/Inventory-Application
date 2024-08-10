@@ -3,19 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>List of Games</title>
+    <link rel="stylesheet" href="stylesheets/stylesheet.css" />
   </head>
   <body>
     <%- include("../partials/navbar.ejs") %>
     <ul>
       <% games.map((game)=>{ %>
       <li><%= game.name %></li>
-      -
       <a href="/game/<%=game.id%>/edit">Edit</a>
+      <a classname="delete" href="/game/<%=game.id%>/delete">X</a>
       <span><%= game.category %></span>
-      <span><%= game.release_date %></span>
       <span><%= game.developer %></span>
-      <span><%= game.release_date%></span>
+      <span><%= game.release_date.toLocaleDateString("en-US")%></span>
       <%})%>
     </ul>
   </body>

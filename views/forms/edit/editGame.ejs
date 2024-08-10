@@ -6,7 +6,7 @@
     <title><%=title %></title>
   </head>
   <body>
-    <form action="/game/:id/edit" method="post">
+    <form action="/game/edit" method="post">
       <label for="gameName">New name:</label
       ><input type="text " name="gameName" placeholder="<%= game.name %>" />
       <label for="categoryName">Change category:</label>
@@ -21,6 +21,7 @@
         <option value="<%= developer.name %>"><%= developer.name %></option>
         <%})%>
       </select>
+      <button type="submit">Submit form</button>
     </form>
   </body>
 </html>

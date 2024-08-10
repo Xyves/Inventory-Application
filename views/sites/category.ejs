@@ -4,8 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
+    <link rel="stylesheet" href="stylesheets/stylesheet.css" />
   </head>
   <body>
     <%- include("../partials/navbar.ejs") %> <%= name %>
+    <a href="/category/<%=id%>/edit">Edit</a
+    ><a classname="delete" href="/category/<%=id%>/delete">X</a>
   </body>
 </html>

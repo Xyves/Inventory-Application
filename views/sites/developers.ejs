@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
+    <link rel="stylesheet" href="stylesheets/stylesheet.css" />
   </head>
   <body>
     <%- include("../partials/navbar.ejs") %>
@@ -11,7 +12,8 @@
       <% developers.map((developer)=>{ %>
       <li>
         <%= developer.name %> -
-        <a href="/developer/<%=developer.id%>/edit">Edit</a>
+        <a classname="edit" href="/developer/<%=developer.id%>/edit">Edit</a>
+        <a classname="delete" href="/developer/<%=developer.id%>/delete">X</a>
       </li>
       <%})%>
     </ul>

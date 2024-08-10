@@ -28,9 +28,9 @@ appRouter.post("/category/create", controller.postCreateCategory);
 appRouter.post("/developer/create", controller.postCreateDeveloper);
 appRouter.post("/game/create", controller.postCreateGame);
 
-appRouter.post("/category/:id/edit", controller.postEditCategory);
-appRouter.post("/developer/:id/edit", controller.postEditDeveloper);
-appRouter.post("/game/:id/edit", controller.postEditGame);
+appRouter.post("/category/edit", controller.postEditCategory);
+appRouter.post("/developer/edit", controller.postEditDeveloper);
+appRouter.post("/game/edit", controller.postEditGame);
 
 appRouter.post("./game:id/delete", controller.getDeleteGame);
 appRouter.post("./category:id/delete", controller.getDeleteCategory);

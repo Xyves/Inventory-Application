@@ -37,16 +37,18 @@ async function getGame(req, res) {
 async function getDeveloper(req, res) {
   const developer = await db.getDeveloper(req.params.id);
   res.render("sites/developer.ejs", {
-    title: "List of Developers",
+    title: developer[0].name,
     name: developer[0].name,
+    game: game[0],
   });
 }
 async function getCategory(req, res) {
   const category = await db.getCategory(req.params.id);
   console.log(category[0].name);
   res.render("sites/category.ejs", {
-    title: category.name,
+    title: category[0].name,
     name: category[0].name,
+    id: category[0].id,
   });
 }
 
@@ -86,46 +88,105 @@ async function postCreateCategory(req, res) {
 }
 
 async function getEditGame(req, res) {
-  const game = await db.getGame(req.params.id);
+  const { id } = req.params;
+  const game = await db.getGame(id);
+
   const categories = await db.getCategories();
-  const developers = await db.getDeveloper();
-  console.log(req.params.id);
+  const developers = await db.getDevelopers();
+
   res.render("forms/edit/editGame", {
     title: game.name,
     game: game,
     categories: categories,
     developers: developers,
+    id,
   });
   // db.editGame();
   // res.redirect;
 }
 async function getEditDeveloper(req, res) {
-  const developer = await db.getDeveloper(req.params.id);
-  console.log(developer);
+  const { id } = req.params;
+  const developer = await db.getDeveloper(id);
   res.render("forms/edit/editDeveloper", {
-    title: developer.name,
-    developer: developer,
+    id,
+    name: developer.name,
   });
 }
 async function getEditCategory(req, res) {
-  const category = await db.getCategory(req.params.id);
-  console.log(category);
+  const { id } = req.params;
+  const category = await db.getCategory(id);
+
   res.render("forms/edit/editCategory", {
-    title: category.name,
-    category: category,
+    id,
+    name: category.name,
   });
 }
 async function postEditGame(req, res) {
+  const { id } = req.body;
+  console.log(id);
   db.editGame(id);
-  res.redirect(`/game/${id}`);
 }
 async function postEditDeveloper(req, res) {
-  db.editGame(id);
-  res.redirect(`/developer/${id}`);
+  try {
+    const { id, developerName } = req.body;
+    console.log("Received ID:", id); // Logs the ID received
+    console.log("Received developer Name:", developerName); // Logs the developer name received
+
+    // Validation checks
+    if (
+      !id ||
+      isNaN(id) ||
+      typeof developerName !== "string" ||
+      developerName.trim() === ""
+    ) {
+      console.error("Invalid input:", { id, developerName });
+      return res.status(400).send("Invalid input.");
+    }
+
+    const developerId = parseInt(id, 10);
+    const developer1 = await db.getDeveloper(developerId);
+
+    if (!developer1) {
+      return res.status(404).send("Category not found.");
+    }
+
+    await db.editDeveloper(developerId, developerName);
+    res.redirect(`/category/${developerId}`);
+  } catch (error) {
+    console.error("Error updating category:", error.message);
+    res.status(500).send("Internal Server Error");
+  }
 }
 async function postEditCategory(req, res) {
-  db.editGame(id);
-  res.redirect(`/category/${id}`);
+  try {
+    const { id, categoryName } = req.body;
+    console.log("Received ID:", id); // Logs the ID received
+    console.log("Received Category Name:", categoryName); // Logs the category name received
+
+    // Validation checks
+    if (
+      !id ||
+      isNaN(id) ||
+      typeof categoryName !== "string" ||
+      categoryName.trim() === ""
+    ) {
+      console.error("Invalid input:", { id, categoryName });
+      return res.status(400).send("Invalid input.");
+    }
+
+    const categoryId = parseInt(id, 10);
+    const category1 = await db.getCategory(categoryId);
+
+    if (!category1) {
+      return res.status(404).send("Category not found.");
+    }
+
+    await db.editCategory(categoryId, categoryName);
+    res.redirect(`/category/${categoryId}`);
+  } catch (error) {
+    console.error("Error updating category:", error.message);
+    res.status(500).send("Internal Server Error");
+  }
 }
 async function getDeleteGame(req, res) {
   db.deleteGame(req.id);

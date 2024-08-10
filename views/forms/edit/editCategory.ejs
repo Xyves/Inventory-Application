@@ -3,16 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%=title %></title>
+    <title><%=name %></title>
   </head>
   <body>
-    <form action="/category/:id/edit" method="post">
+    <form action="/category/edit" method="post">
+      <input type="hidden" name="id" value="<%=id%>" />
       <label for="categoryName">Edit your category name:</label>
-      <input
-        type="text"
-        name="categoryName"
-        placeholder="<%= category[0].name %>"
-      />
+      <input type="text" name="categoryName" placeholder="<%= name %>" />
+      <button type="submit">Submit form</button>
     </form>
   </body>
 </html>

@@ -3,16 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%=title %></title>
+    <title><%=name %></title>
   </head>
   <body>
-    <form action="/developer/:id/edit" method="post">
-      <label for="newDevName">Edit developer</label
-      ><input
-        type="text"
-        name="newDevName"
-        placeholder="<%= developer[0].name %>"
-      />
+    <form action="/developer/edit" method="post">
+      <input type="hidden" name="id" value="<%=id%>" />
+      <label for="developerName">Edit developer</label
+      ><input type="text" name="developerName" placeholder="<%= name %>" />
+      <button type="submit">Submit form</button>
     </form>
   </body>
 </html>

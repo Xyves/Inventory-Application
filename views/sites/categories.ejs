@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Categories</title>
+    <link rel="stylesheet" href="stylesheets/stylesheet.css" />
   </head>
   <body>
     <%- include("../partials/navbar.ejs") %>
@@ -11,6 +12,7 @@
       <% categories.map((category)=>{ %>
       <li><%= category.name %></li>
       <a href="/category/<%=category.id%>/edit">Edit</a>
+      <a classname="delete" href="/category/<%=category.id%>/delete"></a>
       <%})%>
     </ul>
   </body>
