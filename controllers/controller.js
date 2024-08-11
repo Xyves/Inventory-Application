@@ -1,6 +1,6 @@
 const db = require("../db/query");
 async function getIndex(req, res) {
-  res.render("index.ejs", { title: "Home page" });
+  res.redirect("/games");
 }
 async function getGames(req, res) {
   const games = await db.getGames();
@@ -72,7 +72,7 @@ async function postCreateGame(req, res) {
   const { gameName, category, developer, release_date } = req.body;
   console.log(gameName, category, developer, release_date);
   db.postCreateGame(gameName, category, developer, release_date);
-  res.redirect("sites/games");
+  res.redirect("/games");
 }
 async function postCreateDeveloper(req, res) {
   console.log(req.body);
@@ -84,7 +84,7 @@ async function postCreateDeveloper(req, res) {
 async function postCreateCategory(req, res) {
   const { categoryName } = req.body;
   await db.postCreateCategory(categoryName);
-  res.redirect("sites/categories");
+  res.redirect("/categories");
 }
 
 async function getEditGame(req, res) {
@@ -166,10 +166,10 @@ async function postEditGame(req, res) {
 async function postEditDeveloper(req, res) {
   try {
     const { id, developerName } = req.body;
-    console.log("Received ID:", id); // Logs the ID received
-    console.log("Received developer Name:", developerName); // Logs the developer name received
+    console.log("Received ID:", id);
+    console.log("Received developer Name:", developerName);
 
-    // Validation checks
+    // Validation
     if (
       !id ||
       isNaN(id) ||
@@ -197,10 +197,10 @@ async function postEditDeveloper(req, res) {
 async function postEditCategory(req, res) {
   try {
     const { id, categoryName } = req.body;
-    console.log("Received ID:", id); // Logs the ID received
-    console.log("Received Category Name:", categoryName); // Logs the category name received
+    console.log("Received ID:", id);
+    console.log("Received Category Name:", categoryName);
 
-    // Validation checks
+    // Validation
     if (
       !id ||
       isNaN(id) ||
@@ -227,22 +227,15 @@ async function postEditCategory(req, res) {
 }
 async function DeleteGame(req, res) {
   try {
-    // Extract the game ID from request parameters
     const { id } = req.params;
-
-    // Validate the ID
+    // Validate  ID
     if (!id || isNaN(id)) {
       console.error("Invalid game ID:", id);
       return res.status(400).send("Invalid game ID.");
     }
-
-    // Convert the ID to an integer
     const gameId = parseInt(id, 10);
-
-    // Perform the deletion
     await db.postDeleteGame(gameId);
 
-    // Redirect to the games list after successful deletion
     res.redirect("/games");
   } catch (error) {
     // Handle any errors during deletion

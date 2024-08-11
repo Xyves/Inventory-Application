@@ -10,7 +10,7 @@
     <%- include("../partials/navbar.ejs") %>
     <ul class="group-items">
       <% developers.map((developer)=>{ %>
-      <li class="name"><%= developer.name %> -</li>
+      <li class="name"><%= developer.name %></li>
       <a classname="edit" href="/developer/<%=developer.id%>/edit" class="edit"
         >Edit</a
       >

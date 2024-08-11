@@ -133,11 +133,10 @@ nav ul li {
   font-size: 48px;
   display: inline-block;
   padding: 1.5rem;
-  margin-right: 7rem;
+  margin-left: 2rem;
 }
 nav ul li:first-of-type {
   margin-right: auto;
-  margin-left: 5rem;
 }
 h1 {
   font-size: 48;
