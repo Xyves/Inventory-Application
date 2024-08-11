@@ -149,5 +149,45 @@ a:hover {
   color: rgb(170, 167, 167);
 }
 .delete {
-  color: red;
+  color: white;
+  background-color: red;
+  cursor: pointer;
+  border: 0;
+}
+.delete:hover {
+  background-color: rgb(175, 45, 45);
+}
+
+.edit {
+  text-decoration: none;
+  display: inline-block;
+  border: 1px solid red;
+  cursor: pointer;
+}
+.group-items {
+  margin-left: 5rem;
+  margin-top: 5rem;
+}
+.games li {
+  font-size: 2rem;
+  margin: 0.5rem 0;
+}
+.games .name {
+  font-size: 4rem;
+  color: beige;
+}
+.edit,
+.delete,
+.create {
+  display: inline-block;
+  padding: 0.5rem;
+  font-size: 1.6rem;
+  width: auto;
+}
+.name {
+  font-size: 3rem;
+  color: beige;
+}
+.create {
+  margin: 2rem 0;
 }

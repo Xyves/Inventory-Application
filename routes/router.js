@@ -32,7 +32,7 @@ appRouter.post("/category/edit", controller.postEditCategory);
 appRouter.post("/developer/edit", controller.postEditDeveloper);
 appRouter.post("/game/edit", controller.postEditGame);
 
-appRouter.post("./game:id/delete", controller.getDeleteGame);
-appRouter.post("./category:id/delete", controller.getDeleteCategory);
-appRouter.post("./developer:id/delete", controller.getDeleteDeveloper);
+appRouter.post("/game/:id/delete", controller.DeleteGame);
+appRouter.post("/category/:id/delete", controller.DeleteCategory);
+appRouter.post("/developer/:id/delete", controller.DeleteDeveloper);
 module.exports = appRouter;

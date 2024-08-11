@@ -90,7 +90,6 @@ async function postCreateCategory(req, res) {
 async function getEditGame(req, res) {
   const { id } = req.params;
   const game = await db.getGame(id);
-
   const categories = await db.getCategories();
   const developers = await db.getDevelopers();
 
@@ -101,8 +100,6 @@ async function getEditGame(req, res) {
     developers: developers,
     id,
   });
-  // db.editGame();
-  // res.redirect;
 }
 async function getEditDeveloper(req, res) {
   const { id } = req.params;
@@ -122,9 +119,49 @@ async function getEditCategory(req, res) {
   });
 }
 async function postEditGame(req, res) {
-  const { id } = req.body;
-  console.log(id);
-  db.editGame(id);
+  try {
+    const { gameName, category, developer, release_date, id } = req.body;
+    console.log("Received ID:", id);
+    console.log("Received Name:", gameName);
+    console.log("Received Category:", category);
+    console.log("Received Developer:", developer);
+    console.log("Received Release Date:", release_date);
+    if (
+      !id ||
+      isNaN(id) ||
+      typeof gameName !== "string" ||
+      gameName.trim() === ""
+    ) {
+      console.error("Invalid input:", { id, gameName });
+      return res.status(400).send("Invalid input.");
+    }
+
+    const gameId = parseInt(id, 10);
+    const existingGame = await db.getGame(gameId);
+
+    if (!existingGame) {
+      return res.status(404).send("Category not found.");
+    }
+    const updatedGameName =
+      gameName && gameName.trim() !== "" ? gameName : existingGame.name;
+    const updatedCategory =
+      category && category.trim() !== "" ? category : existingGame.category;
+    const updatedDeveloper =
+      developer && developer.trim() !== "" ? developer : existingGame.developer;
+
+    await db.editGame(
+      updatedGameName,
+      updatedCategory,
+      updatedDeveloper,
+      release_date,
+      gameId
+    );
+
+    res.redirect(`/game/${gameId}`);
+  } catch (error) {
+    console.error("Error updating category:", error.message);
+    res.status(500).send("Internal Server Error");
+  }
 }
 async function postEditDeveloper(req, res) {
   try {
@@ -188,16 +225,39 @@ async function postEditCategory(req, res) {
     res.status(500).send("Internal Server Error");
   }
 }
-async function getDeleteGame(req, res) {
-  db.deleteGame(req.id);
-  res.redirect("/games");
+async function DeleteGame(req, res) {
+  try {
+    // Extract the game ID from request parameters
+    const { id } = req.params;
+
+    // Validate the ID
+    if (!id || isNaN(id)) {
+      console.error("Invalid game ID:", id);
+      return res.status(400).send("Invalid game ID.");
+    }
+
+    // Convert the ID to an integer
+    const gameId = parseInt(id, 10);
+
+    // Perform the deletion
+    await db.postDeleteGame(gameId);
+
+    // Redirect to the games list after successful deletion
+    res.redirect("/games");
+  } catch (error) {
+    // Handle any errors during deletion
+    console.error("Error deleting game:", error.message);
+    res.status(500).send("Internal Server Error");
+  }
 }
-async function getDeleteDeveloper(req, res) {
-  db.deleteDeveloper();
+async function DeleteDeveloper(req, res) {
+  const { id } = req.params;
+  db.postDeleteDeveloper(id);
   res.redirect("/developers");
 }
-async function getDeleteCategory(req, res) {
-  db.deleteCategory();
+async function DeleteCategory(req, res) {
+  const { id } = req.params;
+  db.postDeleteCategory(id);
   res.redirect("/categories");
 }
 module.exports = {
@@ -208,9 +268,9 @@ module.exports = {
   getGame,
   getCategory,
   getDeveloper,
-  getDeleteGame,
-  getDeleteCategory,
-  getDeleteDeveloper,
+  DeleteGame,
+  DeleteCategory,
+  DeleteDeveloper,
   getCreateGame,
   getCreateCategory,
   getCreateDeveloper,

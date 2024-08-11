@@ -8,15 +8,33 @@
   </head>
   <body>
     <%- include("../partials/navbar.ejs") %>
-    <ul>
+    <ul class="games group-items">
       <% games.map((game)=>{ %>
-      <li><%= game.name %></li>
-      <a href="/game/<%=game.id%>/edit">Edit</a>
-      <a classname="delete" href="/game/<%=game.id%>/delete">X</a>
-      <span><%= game.category %></span>
-      <span><%= game.developer %></span>
-      <span><%= game.release_date.toLocaleDateString("en-US")%></span>
+      <li class="name"><%= game.name %></li>
+
+      <li>Category: &nbsp;<%= game.category %></li>
+      <li>Developer: &nbsp;<%= game.developer %></li>
+      <li>
+        Release date: &nbsp;<%= game.release_date.toLocaleDateString("en-US")%>
+      </li>
+      <a href="/game/<%=game.id%>/edit" class="edit">Edit</a>
+      <form
+        action="/game/<%= game.id %>/delete"
+        method="post"
+        style="display: inline-block"
+      >
+        <button
+          type="submit"
+          class="delete"
+          onclick="return confirm('Are you sure you want to delete this game?');"
+        >
+          X
+        </button>
+      </form>
       <%})%>
+      <form action="/game/create">
+        <button class="create">Create</button>
+      </form>
     </ul>
   </body>
 </html>

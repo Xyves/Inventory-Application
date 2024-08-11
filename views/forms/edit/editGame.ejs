@@ -7,20 +7,33 @@
   </head>
   <body>
     <form action="/game/edit" method="post">
-      <label for="gameName">New name:</label
-      ><input type="text " name="gameName" placeholder="<%= game.name %>" />
-      <label for="categoryName">Change category:</label>
+      <input type="hidden" name="id" value="<%= id %>" />
+
+      <label for="gameName">New name:</label>
+      <input type="text" name="gameName" placeholder="<%= game.name %>" />
+
+      <label for="category">Change category:</label>
       <select name="category" id="category">
-        <% categories.map((category)=>{%>
+        <% categories.map((category) => { %>
         <option value="<%= category.name %>"><%= category.name %></option>
-        <%})%>
+        <% }) %>
       </select>
-      <label for="categoryName">Change developer:</label>
-      <select name="game" id="game">
-        <% developers.map((developer)=>{%>
+
+      <label for="developer">Change developer:</label>
+      <select name="developer" id="developer">
+        <% developers.map((developer) => { %>
         <option value="<%= developer.name %>"><%= developer.name %></option>
-        <%})%>
+        <% }) %>
       </select>
+
+      <label for="release_date">Release Date:</label>
+      <input
+        type="date"
+        name="release_date"
+        value="<%= game.release_date%>"
+        placeholder="<%= game.release_date %>"
+      />
+
       <button type="submit">Submit form</button>
     </form>
   </body>

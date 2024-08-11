@@ -54,11 +54,16 @@ async function postCreateDeveloper(name) {
   await pool.query("INSERT INTO developers(name) VALUES ($1)", [name]);
 }
 
-async function editGame(name, category, release_date, developer, id) {
-  await pool.query(
-    "UPDATE games SET name = $1,category =$2,release_date = $3,developer = $ WHERE id = $5",
-    [name, category, release_date, developer, id]
-  );
+async function editGame(name, category, developer, release_date, id) {
+  try {
+    await pool.query(
+      "UPDATE games SET name = $1, category = $2, developer = $3, release_date = $4 WHERE id = $5",
+      [name, category, developer, release_date, id]
+    );
+  } catch (error) {
+    console.error("Error executing query:", error.message);
+    throw error; // Handle the error as needed
+  }
 }
 async function editCategory(id, newName) {
   await pool.query("UPDATE categories SET name = $1 WHERE id = $2", [
@@ -74,10 +79,14 @@ async function editDeveloper(id, newName) {
 }
 
 async function postDeleteGame(id) {
-  await pool.query(`DELETE FROM games WHERE id = ${id}`);
+  await pool.query(`DELETE FROM games WHERE id = $1`, [id]);
 }
-async function postDeleteCategory() {}
-async function postDeleteDeveloper() {}
+async function postDeleteCategory(id) {
+  await pool.query(`DELETE FROM categories WHERE id = $1`, [id]);
+}
+async function postDeleteDeveloper(id) {
+  await pool.query(`DELETE FROM developers WHERE id = $1`, [id]);
+}
 module.exports = {
   getGames,
   getGame,

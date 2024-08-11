@@ -8,12 +8,27 @@
   </head>
   <body>
     <%- include("../partials/navbar.ejs") %>
-    <ul>
+    <ul class="group-items">
       <% categories.map((category)=>{ %>
-      <li><%= category.name %></li>
-      <a href="/category/<%=category.id%>/edit">Edit</a>
-      <a classname="delete" href="/category/<%=category.id%>/delete"></a>
+      <li class="name"><%= category.name %></li>
+      <a href="/category/<%=category.id%>/edit" class="edit">Edit</a>
+      <form
+        action="/category/<%= category.id %>/delete"
+        method="post"
+        style="display: inline"
+      >
+        <button
+          type="submit"
+          class="delete"
+          onclick="return confirm('Are you sure you want to delete this category?');"
+        >
+          X
+        </button>
+      </form>
       <%})%>
+      <form action="/category/create">
+        <button class="create">Create</button>
+      </form>
     </ul>
   </body>
 </html>
